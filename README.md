@@ -1,110 +1,79 @@
 # Controle de Equipamentos
 
-Sistema para cadastro de equipamentos e controle de historico de movimentacoes.
+Sistema para cadastro de equipamentos e controle do historico de movimentacoes.
 
-Esta versao recria a aplicacao separando frontend e backend:
+Esta versao separa a aplicacao em duas partes:
 
-- `frontend/`: interface React responsiva.
-- `backend/`: API REST em Node.js com Express.
-- Persistencia em SQLite.
+- `backend/`: API REST em Node.js com Express e persistencia SQLite.
+- `frontend/`: interface React com Vite.
 
-## Funcionalidades
-
-- Cadastrar equipamentos.
-- Listar equipamentos cadastrados.
-- Buscar equipamento por etiqueta de servico.
-- Registrar movimentacao por etiqueta.
-- Listar historico de movimentacoes.
-- Fechar movimentacao aberta.
-- Consultar situacao atual dos equipamentos em uso.
-
-## Arquitetura
-
-O projeto foi organizado por responsabilidade e dominio, evitando arquivos soltos por tipo tecnico quando isso dificulta a manutencao.
-
-### Backend
+## Estrutura
 
 ```text
-backend/src
-├── app.js
-├── routes.js
-├── server.js
-├── modules
-│   ├── equipamentos
-│   │   ├── equipamentos.controller.js
-│   │   ├── equipamentos.repository.js
-│   │   ├── equipamentos.routes.js
-│   │   └── equipamentos.service.js
-│   └── movimentacoes
-│       ├── movimentacoes.controller.js
-│       ├── movimentacoes.repository.js
-│       ├── movimentacoes.routes.js
-│       └── movimentacoes.service.js
-└── shared
-    ├── database
-    ├── errors
-    ├── http
-    └── utils
+.
+|-- backend
+|   |-- .env.example
+|   |-- package.json
+|   `-- src
+|       |-- app.js
+|       |-- routes.js
+|       |-- server.js
+|       |-- modules
+|       |   |-- equipamentos
+|       |   `-- movimentacoes
+|       `-- shared
+|           |-- config
+|           |-- database
+|           |-- errors
+|           |-- http
+|           `-- utils
+|-- frontend
+|   |-- .env.example
+|   |-- package.json
+|   |-- vite.config.js
+|   `-- src
+|       |-- app
+|       |-- features
+|       `-- shared
+|-- package.json
+`-- README.md
 ```
-
-- `routes`: define as rotas HTTP.
-- `controllers`: recebem requisicoes e formatam respostas.
-- `services`: concentram regras de negocio.
-- `repositories`: acessam o SQLite.
-- `shared`: codigo reutilizavel e infraestrutura comum.
-
-### Frontend
-
-```text
-frontend/src
-├── app
-│   ├── App.jsx
-│   ├── Navigation.jsx
-│   └── pages.js
-├── features
-│   ├── equipamentos
-│   │   ├── equipamentosApi.js
-│   │   └── pages
-│   └── movimentacoes
-│       ├── movimentacoesApi.js
-│       └── pages
-└── shared
-    ├── components
-    ├── hooks
-    ├── services
-    └── styles
-```
-
-- `app`: estrutura principal da aplicacao.
-- `features`: telas e chamadas de API por dominio.
-- `shared`: componentes, hooks, cliente HTTP e estilos reutilizaveis.
 
 ## Requisitos
 
-- Node.js 24 ou superior.
-- npm 11 ou superior.
+- Node.js 24 ou superior
+- npm 11 ou superior
 
-## Backend
+## Instalacao
 
-Entre na pasta do backend:
-
-```powershell
-cd backend
-```
-
-Instale as dependencias:
+Na raiz do repositorio:
 
 ```powershell
-npm install
+npm run setup
 ```
 
-Crie o arquivo `.env` com base no exemplo:
+Se preferir instalar separadamente:
 
 ```powershell
-Copy-Item .env.example .env
+npm run install:backend
+npm run install:frontend
 ```
 
-Variaveis disponiveis:
+## Configuracao
+
+Backend:
+
+```powershell
+Copy-Item backend/.env.example backend/.env
+```
+
+Frontend:
+
+```powershell
+Copy-Item frontend/.env.example frontend/.env
+```
+
+Variaveis do backend:
 
 ```env
 PORT=3333
@@ -112,57 +81,38 @@ DB_PATH=./data/equipamentos.db
 FRONTEND_ORIGIN=http://localhost:5173
 ```
 
-Rode a API:
-
-```powershell
-npm run dev
-```
-
-A API ficara em:
-
-```text
-http://localhost:3333/api
-```
-
-## Frontend
-
-Em outro terminal, entre na pasta do frontend:
-
-```powershell
-cd frontend
-```
-
-Instale as dependencias:
-
-```powershell
-npm install
-```
-
-Crie o arquivo `.env` com base no exemplo:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Variavel necessaria:
+Variavel do frontend:
 
 ```env
 VITE_API_URL=http://localhost:3333/api
 ```
 
-Rode a interface:
+## Executar
+
+API:
 
 ```powershell
-npm run dev
+npm run dev:backend
 ```
 
-O Vite informara a URL local, normalmente:
+Interface:
 
-```text
-http://localhost:5173
+```powershell
+npm run dev:frontend
 ```
 
-## Endpoints REST
+O backend fica disponivel em `http://localhost:3333/api`.
+
+O frontend normalmente sobe em `http://localhost:5173`.
+
+## Scripts uteis
+
+- `npm run dev:backend`: inicia a API em modo watch.
+- `npm run start:backend`: inicia a API sem watch.
+- `npm run dev:frontend`: inicia o Vite.
+- `npm run build:frontend`: gera o build do frontend.
+
+## Endpoints
 
 - `GET /api/health`
 - `GET /api/equipamentos`
@@ -173,12 +123,14 @@ http://localhost:5173
 - `PATCH /api/movimentacoes/fechar`
 - `GET /api/movimentacoes/situacao-atual`
 
-## Banco de Dados
+## Banco de dados
 
-O backend usa SQLite. Por padrao, o arquivo fica em:
+O backend usa SQLite e cria as tabelas automaticamente ao iniciar.
+
+Por padrao, o banco fica em:
 
 ```text
 backend/data/equipamentos.db
 ```
 
-As tabelas sao criadas automaticamente ao iniciar a API.
+O caminho configurado em `DB_PATH` e resolvido a partir da pasta `backend/`, evitando diferencas quando a API e iniciada da raiz do repositorio.

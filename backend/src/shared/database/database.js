@@ -1,12 +1,12 @@
 import { mkdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
-const databasePath = resolve(process.cwd(), process.env.DB_PATH || "./data/equipamentos.db");
+import { env } from "../config/env.js";
 
-mkdirSync(dirname(databasePath), { recursive: true });
+mkdirSync(dirname(env.dbPath), { recursive: true });
 
-export const db = new DatabaseSync(databasePath);
+export const db = new DatabaseSync(env.dbPath);
 db.exec("PRAGMA foreign_keys = ON");
 
 export function initializeDatabase() {

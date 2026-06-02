@@ -1,12 +1,9 @@
-import "dotenv/config";
-
 import { createApp } from "./app.js";
+import { env } from "./shared/config/env.js";
 import { initializeDatabase } from "./shared/database/database.js";
-
-const port = Number(process.env.PORT || 3333);
 
 initializeDatabase();
 
-createApp().listen(port, () => {
-  console.log(`API REST rodando em http://localhost:${port}`);
+createApp().listen(env.port, () => {
+  console.log(`API REST rodando em http://localhost:${env.port}`);
 });

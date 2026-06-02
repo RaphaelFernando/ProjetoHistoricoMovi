@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function DataTable({ columns, rows, emptyMessage }) {
   if (!rows.length) {
     return <p className="empty-state">{emptyMessage}</p>;

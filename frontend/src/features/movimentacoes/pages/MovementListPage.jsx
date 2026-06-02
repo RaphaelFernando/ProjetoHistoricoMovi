@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useCallback } from "react";
 
 import { Alert } from "../../../shared/components/Alert.jsx";

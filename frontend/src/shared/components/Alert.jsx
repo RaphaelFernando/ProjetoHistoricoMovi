@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function Alert({ type = "info", children }) {
   if (!children) {
     return null;
