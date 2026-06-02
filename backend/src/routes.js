@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import equipamentosRoutes from "./modules/equipamentos/equipamentos.routes.js";
-import movimentacoesRoutes from "./modules/movimentacoes/movimentacoes.routes.js";
+import { equipamentosRoutes } from "./modules/equipamentos/index.js";
+import { movimentacoesRoutes } from "./modules/movimentacoes/index.js";
 
 export const apiRoutes = Router();
 

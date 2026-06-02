@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { pageEntries } from "./pages.js";
 
 export function Navigation({ activePage, onChange }) {
