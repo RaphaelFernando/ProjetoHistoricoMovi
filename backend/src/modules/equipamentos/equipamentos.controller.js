@@ -1,4 +1,5 @@
 import {
+  atualizarEquipamento,
   buscarEquipamentoPorEtiqueta,
   cadastrarEquipamento,
   listarEquipamentos
@@ -16,6 +17,14 @@ export function store(req, res) {
   const equipamento = cadastrarEquipamento(req.body);
   res.status(201).json({
     message: "Equipamento cadastrado com sucesso!",
+    data: equipamento
+  });
+}
+
+export function update(req, res) {
+  const equipamento = atualizarEquipamento(req.params.id, req.body);
+  res.json({
+    message: "Equipamento atualizado com sucesso!",
     data: equipamento
   });
 }

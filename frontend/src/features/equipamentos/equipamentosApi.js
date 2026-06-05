@@ -6,5 +6,9 @@ export const equipamentosApi = {
     method: "POST",
     body: JSON.stringify(payload)
   }),
+  update: (id, payload) => request(`/equipamentos/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload)
+  }),
   findByEtiqueta: (etiquetaServico) => request(`/equipamentos/${encodeURIComponent(etiquetaServico)}`)
 };

@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { Alert } from "../../../shared/components/Alert.jsx";
 import { DataTable } from "../../../shared/components/DataTable.jsx";
 import { useAsyncData } from "../../../shared/hooks/useAsyncData.js";
-import { movimentacoesApi } from "../movimentacoesApi.js";
+import { getMovimentacaoAnexoUrl, movimentacoesApi } from "../movimentacoesApi.js";
 
 const columns = [
   { key: "equipamentoId", label: "Equipamento ID" },
@@ -13,7 +13,19 @@ const columns = [
   { key: "usuario", label: "Usuario atual" },
   { key: "setor", label: "Setor" },
   { key: "loja", label: "Loja" },
-  { key: "dataEntrada", label: "Data de entrada" }
+  { key: "dataEntrada", label: "Data de entrada" },
+  {
+    key: "documento",
+    label: "Documento",
+    render: (row) => {
+      const anexoUrl = getMovimentacaoAnexoUrl(row);
+      return anexoUrl ? (
+        <a className="table-link" href={anexoUrl} target="_blank" rel="noopener noreferrer">
+          Visualizar
+        </a>
+      ) : "-";
+    }
+  }
 ];
 
 export function CurrentStatusPage() {
