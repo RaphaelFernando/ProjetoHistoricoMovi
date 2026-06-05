@@ -9,6 +9,26 @@ mkdirSync(dirname(env.dbPath), { recursive: true });
 export const db = new DatabaseSync(env.dbPath);
 db.exec("PRAGMA foreign_keys = ON");
 
+const movimentacoesAttachmentColumns = [
+  ["anexo_nome_original", "TEXT"],
+  ["anexo_nome_salvo", "TEXT"],
+  ["anexo_caminho", "TEXT"],
+  ["anexo_mimetype", "TEXT"],
+  ["anexo_tamanho", "INTEGER"]
+];
+
+function ensureColumns(tableName, columns) {
+  const existingColumns = new Set(
+    db.prepare(`PRAGMA table_info(${tableName})`).all().map((column) => column.name)
+  );
+
+  columns.forEach(([name, type]) => {
+    if (!existingColumns.has(name)) {
+      db.exec(`ALTER TABLE ${tableName} ADD COLUMN ${name} ${type}`);
+    }
+  });
+}
+
 export function initializeDatabase() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS equipamentos (
@@ -33,7 +53,14 @@ export function initializeDatabase() {
       entregue_por TEXT,
       recebido_por TEXT,
       observacoes TEXT,
+      anexo_nome_original TEXT,
+      anexo_nome_salvo TEXT,
+      anexo_caminho TEXT,
+      anexo_mimetype TEXT,
+      anexo_tamanho INTEGER,
       FOREIGN KEY (equipamento_id) REFERENCES equipamentos(id)
     );
   `);
+
+  ensureColumns("movimentacoes", movimentacoesAttachmentColumns);
 }

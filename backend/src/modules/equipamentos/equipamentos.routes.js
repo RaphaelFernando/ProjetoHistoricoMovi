@@ -7,5 +7,6 @@ const router = Router();
 router.get("/", equipamentoController.index);
 router.get("/:etiquetaServico", equipamentoController.show);
 router.post("/", equipamentoController.store);
+router.put("/:id", equipamentoController.update);
 
 export default router;

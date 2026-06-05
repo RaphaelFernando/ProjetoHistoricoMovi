@@ -38,6 +38,30 @@ export function createEquipamento(data) {
   return findEquipamentoById(Number(result.lastInsertRowid));
 }
 
+export function updateEquipamento(id, data) {
+  db.prepare(`
+    UPDATE equipamentos
+    SET
+      marca = ?,
+      modelo = ?,
+      especificacoes = ?,
+      memoria_fisica = ?,
+      etiqueta_servico = ?,
+      codigo_servico_expresso = ?
+    WHERE id = ?
+  `).run(
+    data.marca,
+    data.modelo,
+    data.especificacoes,
+    data.memoriaFisica,
+    data.etiquetaServico,
+    data.codigoServicoExpresso,
+    id
+  );
+
+  return findEquipamentoById(id);
+}
+
 export function findEquipamentoById(id) {
   return mapEquipamento(
     db.prepare("SELECT * FROM equipamentos WHERE id = ?").get(id)
